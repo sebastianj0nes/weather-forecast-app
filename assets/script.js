@@ -29,26 +29,34 @@ var todayForecast = function (){
         console.log(response);
 
         // Initialise variables to store relevant info
-        var todayTemp = response.list[0].main.temp;
+        var todayTemp = response.list[0].main.temp - 273.15;
         var todayWind = response.list[0].wind.speed;
         var todayHumid = response.list[0].main.humidity;
         var todayTime = moment().format("D/M/YY");
 
+        // Add border to today sec
+        todaySec.attr("style","border: 2px black solid;");
 
+        // Create header element to hold information about time/place 
         var todayHeader = $("<h1>");
         todayHeader.text("Current forecast in " + textInput+" @ " + todayTime);
-        console.log(todayHeader);
         todaySec.append(todayHeader);
 
+        // Create p elements for temp/humidity/wind speed
+            // Temp
+        var tempP = $("<p>");
+        tempP.text("Temperature: " + todayTemp.toFixed(2) + " °C");
+        todaySec.append(tempP);
 
-        console.log("Temp: " + todayTemp);
-        console.log("Wind: " + todayWind);
-        console.log("Humidity: " + todayHumid + " %");
+            // Humidity
+        var humidP = $("<p>");
+        humidP.text("Humidity: " + todayHumid + " %");
+        todaySec.append(humidP);
 
-
-
-
-
+            // Wind speed
+        var speedP = $("<p>");
+        speedP.text("Wind speed: " + todayWind + " KPH");
+        todaySec.append(speedP);
 
 
       });
