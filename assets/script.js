@@ -2,18 +2,33 @@
 var textInput;
 var submitButton = $("#search-button");
 var todaySec = $("#today");
+var historyDiv = $("#history");
+
+
 
 // Initialise API
 var APIKey = "29f595125610436376375721ee1541b8";
 
+// On page load 
+// Create header element for 'previous search'
+var historyHeader = $("<h3>");
+historyHeader.text("Previous search");
+historyDiv.append(historyHeader);
+
+
 submitButton.on("click",function(event){
     event.preventDefault();
 
+    // Set variable to user input
     textInput = $("#search-input").val();
 
-    console.log(textInput);
+    
+    // Set local storage to store latest text input
+    localStorage.setItem("city",textInput);
 
+    // Call functions to display and store weather data
     todayForecast();
+    addLocationToLS();
 })
 
 
@@ -28,7 +43,7 @@ var todayForecast = function (){
       }).then(function(response) {
         console.log(response);
 
-        // Initialise variables to store relevant info
+        // Initialise variables to store relevant weather info
         var todayTemp = response.list[0].main.temp - 273.15;
         var todayWind = response.list[0].wind.speed;
         var todayHumid = response.list[0].main.humidity;
@@ -57,7 +72,61 @@ var todayForecast = function (){
         var speedP = $("<p>");
         speedP.text("Wind speed: " + todayWind + " KPH");
         todaySec.append(speedP);
-
-
       });
     }
+
+// Function to add previous searches to local storage
+var addLocationToLS = function () {
+
+    // Get the user input from local storage
+    var prevCity = localStorage.getItem("city");
+    
+    // Create button to add to history
+    var prevButton = $("<button>");
+    prevButton.text(prevCity);
+    historyDiv.append(prevButton);
+
+    // On click of history button load that weather data
+    prevButton.on("click",function(){
+
+        textInput = prevCity;
+        // Call forecast function
+        todayForecast();
+    })
+    
+}
+
+
+
+// To store all previous cities from user
+    // Create an array 
+        // Push each search into the array 
+    // Store the array into local storage
+    // Create buttons with loop to store all separate searches as separate button
+
+
+
+
+
+
+
+
+
+
+
+
+
+// var aNumber = !!localStorage.getItem('number') ? JSON.parse(localStorage.getItem('number')) : [];
+// var number = document.getElementById('number').value;
+// aNumber.push(number);
+// localStorage.setItem('number', JSON.stringify(aNumber));
+
+
+
+
+
+addLocationToLS();
+
+// Keep cities added to history
+    // Using local storage
+    // Create an object storing all the 
