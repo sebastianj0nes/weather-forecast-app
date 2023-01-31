@@ -89,6 +89,7 @@ var addLocationToLS = function () {
     // On click of history button load that weather data
     prevButton.on("click",function(){
 
+        todaySec.empty();
         textInput = prevCity;
         // Call forecast function
         todayForecast();
