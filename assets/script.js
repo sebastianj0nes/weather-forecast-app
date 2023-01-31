@@ -49,6 +49,14 @@ var todayForecast = function (){
         var todayHumid = response.list[0].main.humidity;
         var todayTime = moment().format("D/M/YY");
 
+        // Display weather icon as part of header
+        var weatherIcon = $("<img>");
+
+        // Create variable to hold icon id
+        var todayIconID = response.list[0].weather[0].icon;
+        // Set img source to weather icon
+        weatherIcon.attr("src","http://openweathermap.org/img/w/" + todayIconID + ".png");
+
         // Add border to today sec
         todaySec.attr("style","border: 2px black solid;");
 
@@ -62,6 +70,8 @@ var todayForecast = function (){
         var tempP = $("<p>");
         tempP.text("Temperature: " + todayTemp.toFixed(2) + " °C");
         todaySec.append(tempP);
+        todaySec.append(weatherIcon);
+
 
             // Humidity
         var humidP = $("<p>");
