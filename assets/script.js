@@ -97,37 +97,5 @@ var addLocationToLS = function () {
     
 }
 
-
-
-// To store all previous cities from user
-    // Create an array 
-        // Push each search into the array 
-    // Store the array into local storage
-    // Create buttons with loop to store all separate searches as separate button
-
-
-
-
-
-
-
-
-
-
-
-
-
-// var aNumber = !!localStorage.getItem('number') ? JSON.parse(localStorage.getItem('number')) : [];
-// var number = document.getElementById('number').value;
-// aNumber.push(number);
-// localStorage.setItem('number', JSON.stringify(aNumber));
-
-
-
-
-
+// Call location func to load previous search at all times
 addLocationToLS();
-
-// Keep cities added to history
-    // Using local storage
-    // Create an object storing all the 
