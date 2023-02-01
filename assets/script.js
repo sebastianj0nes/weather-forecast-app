@@ -103,9 +103,11 @@ var addLocationToLS = function () {
     prevButton.on("click",function(){
 
         todaySec.empty();
+        forecastSec.empty();
         textInput = prevCity;
         // Call forecast function
         todayWeather();
+        forecastWeather();
     })
     
 }
