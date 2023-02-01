@@ -1,9 +1,10 @@
+$(document).ready(function(){
 // Initialise javascript variables
 var textInput;
 var submitButton = $("#search-button");
 var todaySec = $("#today");
 var historyDiv = $("#history");
-
+var forecastSec = $("#forecast");
 
 
 // Initialise API
@@ -27,13 +28,14 @@ submitButton.on("click",function(event){
     localStorage.setItem("city",textInput);
 
     // Call functions to display and store weather data
-    todayForecast();
+    todayWeather();
     addLocationToLS();
+    forecastWeather();
 })
 
 
 // Func to get data from OpenWeather
-var todayForecast = function (){
+var todayWeather = function (){
 
     // Ajax call to retrieve co-ordinates from using API
     var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q="+ textInput+ "&appid=" + APIKey;
@@ -56,10 +58,11 @@ var todayForecast = function (){
         var todayIconID = response.list[0].weather[0].icon;
         // Set img source to weather icon
         weatherIcon.attr("src","http://openweathermap.org/img/w/" + todayIconID + ".png");
+        weatherIcon.attr("style","background-color: grey;");
 
         // Add border to today sec
         todaySec.attr("style","border: 2px black solid;");
-
+        todaySec.addClass("todaySec");
         // Create header element to hold information about time/place 
         var todayHeader = $("<h1>");
         todayHeader.text("Current forecast in " + textInput+" @ " + todayTime);
@@ -102,10 +105,57 @@ var addLocationToLS = function () {
         todaySec.empty();
         textInput = prevCity;
         // Call forecast function
-        todayForecast();
+        todayWeather();
     })
     
 }
 
 // Call location func to load previous search at all times
 addLocationToLS();
+
+
+
+var forecastWeather = function (){
+
+    // Get weather data
+        // Date / Icon / Temp / Humidity
+    
+    var cardDeck = $("<div class ='card-deck'>");
+
+    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q="+ textInput+ "&appid=" + APIKey;
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      }).then(function(response) {
+        console.log(response);
+
+
+        var dayCount = 0;
+
+    forecastSec.append(cardDeck);
+    // For loop for 5 days
+    for (var i = 0; i < 5; i++){
+
+        // Using 3 hour intervals - every 8 intervals is a day
+        
+        
+        // Create card element
+        var dayCard = $("<div class=card>");
+        // Append card to forecast section
+        cardDeck.append(dayCard);
+
+        var date = response.list[dayCount].dt_txt;
+        console.log(date);
+        dayCard.append(date);
+
+       dayCount = dayCount + 8;
+    }
+
+});
+};
+
+
+
+
+
+});
