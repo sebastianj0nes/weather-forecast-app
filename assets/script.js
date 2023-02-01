@@ -20,6 +20,8 @@ historyDiv.append(historyHeader);
 submitButton.on("click",function(event){
     event.preventDefault();
 
+    todaySec.empty();
+    forecastSec.empty();
     // Set variable to user input
     textInput = $("#search-input").val();
 
