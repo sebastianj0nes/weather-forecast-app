@@ -119,9 +119,18 @@ var forecastWeather = function (){
 
     // Get weather data
         // Date / Icon / Temp / Humidity
-    
+    var forecastHeader = $("<h3>");
+    forecastHeader.text("5-day Forecast: ");
+    forecastHeader.attr("style","width: 100%;");
+    forecastSec.append(forecastHeader);
+
+    // Set inner content to nothing (if already loaded weather)
+    forecastSec.innerHTML = "";
+
+    // Initiate card deck to hold 5 day forecast cards
     var cardDeck = $("<div class ='card-deck'>");
 
+    // AJAX call to get data from API
     var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q="+ textInput+ "&appid=" + APIKey;
       $.ajax({
         url: queryURL,
@@ -129,14 +138,13 @@ var forecastWeather = function (){
       }).then(function(response) {
         console.log(response);
 
-
+        // Initiate counter 
         var dayCount = 0;
 
     forecastSec.append(cardDeck);
     // For loop for 5 days
     for (var i = 0; i < 5; i++){
 
-        // Using 3 hour intervals - every 8 intervals is a day
         
         
         // Create card element
@@ -144,10 +152,33 @@ var forecastWeather = function (){
         // Append card to forecast section
         cardDeck.append(dayCard);
 
+        // DATE
         var date = response.list[dayCount].dt_txt;
-        console.log(date);
-        dayCard.append(date);
+        var formattedDate = moment(date).format("D/M/YYYY");
+        dayCard.append(formattedDate);
 
+        // ICON
+        var icon = response.list[dayCount].weather[0].icon;
+        var weatherIcon = $("<img>");
+        // Set img source to weather icon
+        weatherIcon.attr("src","http://openweathermap.org/img/w/" + icon + ".png");
+        weatherIcon.attr("style","background-color: grey;");
+        dayCard.append(weatherIcon);
+
+        // TEMPERATURE
+        var forecastTemp = response.list[dayCount].main.temp - 273.15;
+        var tempP = $("<p>");
+        tempP.text("Temperature: " + forecastTemp.toFixed(2) + "°C");
+        dayCard.append(tempP);
+
+        // HUMIDITY
+        var forecastHumidity = response.list[dayCount].main.humidity;
+        var humidityP = $("<p>");
+        humidityP.text("Humidity: " + forecastHumidity + " %");
+        dayCard.append(humidityP);
+
+
+       // Using 3 hour intervals - every 8 intervals is a day
        dayCount = dayCount + 8;
     }
 
